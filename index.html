@@ -117,7 +117,8 @@ ul li
 		"p2.jpg" : "Your punishment must be more severe.",
 		"p3.jpg" : "Deshi Deshi Bashar Bashar...Deshi Deshi Bashar Bashar...",
 		"p4.jpg" : "This isn't the time to fear. That will come later.",
-		"p5.jpg" : "There's a storm coming, Mr. Wayne."
+		"p5.jpg" : "There's a storm coming, Mr. Wayne.",
+		"p6.jpg" : "I am Gotham's reckoning."
 	};
  	
 	var total_images = Object.keys(images).length;
@@ -205,6 +206,8 @@ ul li
 	
 	function init_controls()
 	{
+		var paused = false;
+
 		$("#pane").draggable();
 		$("#pane").draggable("disable");
 	
@@ -213,7 +216,21 @@ ul li
 		}).mouseup(function() {
 			$("#pane").draggable("disable");
 		});
-		
+
+		$("#pause").click(function()
+		{
+		 	if(paused)	
+			{
+				$("audio")[0].play();
+				this.style.opacity = 1;
+			}
+			else
+			{
+				$("audio")[0].pause();
+				this.style.opacity = 0.4;
+			}
+			paused = ~paused;
+		});
 	}
 
 </script>
@@ -223,6 +240,10 @@ ul li
 
 
 <body>
+
+<audio id="audio" autoplay="autoplay">
+	<source src="audio/beware.mp3" type="audio/mpeg" />
+</audio>
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -240,7 +261,7 @@ ul li
 			<div id="controls" style="float:right">
 				<ul>
 				<li>
-					<div><img src="images/audio.png" width="20px;" height="20px;" /></div></li>
+					<div id="pause"><img src="images/audio.png" width="20px;" height="20px;" /></div></li>
 				<li>
 					<div id="dragger"><img src="images/drag.png" width="20px" height="20px" /></div></li>
 			
