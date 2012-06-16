@@ -3,7 +3,9 @@
 	<title>The Dark Knight Rises</title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
- 	  <link href="css/bootstrap.css" rel="stylesheet">
+ 	<script src="js/fullscreen.js" type="text/javascript"></script>
+	
+	 <link href="css/bootstrap.css" rel="stylesheet">
  			
 <style type="text/css">
 
@@ -173,7 +175,7 @@ ul li
 				$("#background").fadeIn(1000);
 			});
 
-		}, 5000);
+		}, 8000);
 	}
 	
 	function init_clock()
@@ -240,6 +242,23 @@ ul li
 			}
 			paused = ~paused;
 		});
+
+		$("#fullscreen").click(function()
+		{
+			if(window.fullScreenApi.supportsFullScreen)	
+			{
+				if(fullScreenApi.isFullScreen())
+				{
+					this.innerHTML = "Fullscreen";
+					window.fullScreenApi.cancelFullScreen(document.documentElement);
+				}
+				else
+				{
+					this.innerHTML = "Exit Fullscreen";
+					window.fullScreenApi.requestFullScreen(document.documentElement);
+				}
+			}
+		});
 	}
 
 </script>
@@ -250,10 +269,6 @@ ul li
 
 <body>
 
-<audio id="audio" autoplay="autoplay" preload="none" loop="loop">
-	<source src="audio/beware2.mp3" type="audio/mpeg" preload="none" />
-</audio>
-
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -262,13 +277,24 @@ ul li
   js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+
+<audio id="audio" autoplay="autoplay" preload="none" loop="loop">
+	<source src="audio/beware2.mp3" type="audio/mpeg" preload="none" />
+</audio>
+
+
+<div id="container">
+
 <div id="background"></div>
 	<div id="pane">
 		<div id="pane_header" style="clear:both;">
 			<h1 style="display:inline;">The Legend Ends</h1>
 			<div id="controls" style="float:right">
 				<ul>
+				<li>
+					<a id="fullscreen" class="btn btn-small">Fullscreen</a>
+				</li>
+
 				<li>
 					<div id="pause"><img src="images/audio.png" width="20px;" height="20px;" /></div></li>
 				<li>
@@ -334,7 +360,7 @@ ul li
 
 		</ul>
 	</div>
-
+</div>
 </body>
 </html>
 
