@@ -1,9 +1,13 @@
 <html>
+<!-- Author - Vikesh Khanna 
+     Email - khanna.vikesh [at] gmail [dot] com
+-->
+
 <head>
 	<meta property="og:title" content="The Dark Knight Rises Countdown" />
         <meta property="og:type" content="movie" />
         <meta property="og:url" content="http://thelegendends.in" />
-        <meta property="og:image" content="http://thelegendends.in/images/p1.jpg" />
+        <meta property="og:image" content="http://thelegendends.in/images/fb.jpg" />
         <meta property="og:site_name" content="The Legend Ends" />
         <meta property="fb:admins" content="1029916148" /> 
 
@@ -170,6 +174,8 @@ ul li
 		setInterval(function(){
 			
 			// fade out background
+			$("#dialogue").fadeOut(1000);
+
 			$("#background").fadeOut(1000,
 			function() { 
 				//change image			
@@ -179,10 +185,10 @@ ul li
 				$("#dialogue")[0].innerHTML = images[Object.keys(images)[image_counter]];
 			
 				//fade In
-				$("#background").fadeIn(1000);
+				$("#background,#dialogue").fadeIn(1000);
 			});
 
-		}, 8000);
+		}, 9000);
 	}
 	
 	function init_clock()
@@ -267,6 +273,20 @@ ul li
 			}
 		});
 	}
+
+</script>
+<!-- Google Analytics -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32710009-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 
 </script>
 
