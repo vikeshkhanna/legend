@@ -39,48 +39,75 @@ a
 	height:100%;
 }
 	
-#pane
+#pane1
 {
-	background-color:#000000;
-	position:absolute;	
 	left:20px;
 	top:100px;
-	padding:20px;
-	color:white;
-	opacity:0.90;
 }
 
-h1
+#pane2
+{
+	left:20px;
+	top:20px;
+	padding:10px;
+}
+
+.pane-back
+{
+	background-color:#000000;
+	position:absolute;
+	padding:20px;
+	color:white;
+	opacity:0.9;
+}
+
+
+.pane-time h1
 {
 	font-size:36px;	
 }
 
-h2
+.pane-time h2
 {
 	font-size:22px;
 }
 
-h3
+.pane-time h3
 {
 	font-size:108px;
 	margin:0px;
 }
 
-h4
+.pane-time h4
 {
 	font-size:28px;
 }
 
-#pane_time
+.pane-time
 {
 	margin-top:40px;
 	overflow:auto;
 }
 
-#pane_time div
+.pane-time div
 {
 	margin-left:30px;
 	float:left;
+}
+
+#pane_time2
+{
+	margin-top:10px;
+}
+
+#pane_time2 h3
+{
+	font-size:20px;
+}
+
+#pane_time2 h4
+{
+	font-size:14px;
 }
 
 .counter_holder *
@@ -131,7 +158,9 @@ ul li
 <script type="text/javascript">
 	var image_counter = 0;
  	var preloaded = [];
-	
+	var video_mode = false;
+	var audio_paused = false;
+
 	var images =
 	{
 		"p1.jpg" : "It's not who I am underneath but what I do that defines me.",
@@ -173,7 +202,8 @@ ul li
 	function init_animation()
 	{
 		setInterval(function(){
-			
+			if(!video_mode)
+			{
 			// fade out background
 			$("#dialogue").fadeOut(1000);
 
@@ -187,8 +217,8 @@ ul li
 			
 				//fade In
 				$("#background,#dialogue").fadeIn(1000);
-			});
-
+				});
+			}
 		}, 9000);
 	}
 	
@@ -216,10 +246,14 @@ ul li
 			diff = release_date - today;
 			var seconds = Math.floor(diff/(1000));		
 
-			$("#days")[0].innerHTML = formatNum(days)
-			$("#hours")[0].innerHTML = formatNum(hours);
-			$("#minutes")[0].innerHTML = formatNum(minutes);
-			$("#seconds")[0].innerHTML = formatNum(seconds);
+			var edays = $("#days,#days2");
+			edays[0].innerHTML = edays[1].innerHTML = formatNum(days)
+			var ehours = $("#hours,#hours2");
+			ehours[0].innerHTML = ehours[1].innerHTML = formatNum(hours);
+			var eminutes = $("#minutes,#minutes2");
+			eminutes[0].innerHTML = eminutes[1].innerHTML = formatNum(minutes);
+			var eseconds = $("#seconds,#seconds2");
+			eseconds[0].innerHTML = eseconds[1].innerHTML = formatNum(seconds);
 		}, 1000);		
 
 	}
@@ -231,20 +265,19 @@ ul li
 	
 	function init_controls()
 	{
-		var paused = false;
 
-		$("#pane").draggable();
-		$("#pane").draggable("disable");
+		$("#pane1").draggable();
+		$("#pane1").draggable("disable");
 	
 		$("#dragger").mousedown(function(){
-			$("#pane").draggable("enable");
+			$("#pane1").draggable("enable");
 		}).mouseup(function() {
-			$("#pane").draggable("disable");
+			$("#pane1").draggable("disable");
 		});
 
 		$("#pause").click(function()
 		{
-		 	if(paused)	
+		 	if(audio_paused)	
 			{
 				$("audio")[0].play();
 				this.style.opacity = 1;
@@ -254,7 +287,7 @@ ul li
 				$("audio")[0].pause();
 				this.style.opacity = 0.4;
 			}
-			paused = ~paused;
+			audio_paused = ~audio_paused;
 		});
 
 		$("#fullscreen").click(function()
@@ -273,6 +306,56 @@ ul li
 				}
 			}
 		});
+
+		$("#rise").click(function()
+		{
+			video_mode = true;
+			$("#pane1").fadeOut(1000);
+			$("#pane2").fadeTo(1000,1, function()
+			{
+				this.style.display = "block";
+			});
+
+			$("#background").fadeOut(1000, function()
+			{	
+				$("#background").css("display","none");
+
+				$("#video").fadeTo(1000, 1, function()
+				{
+					$("#video").css("display","block");	
+					$("#audio")[0].pause();
+					$("#video")[0].play();
+				});
+			});
+		});
+
+		$("#end").click(function()
+		{
+			video_mode = false;
+			$("#pane1").fadeIn(1000);
+			$("#pane2").fadeTo(1000,0, function(){
+				this.style.display = "none";
+			});
+			
+			$("#video").fadeTo(1000, 0, function()
+			{
+
+				$("#video").css("display","none");
+
+				$("#background").fadeIn(1000, function()
+				{
+					$("#background").css("display","block");
+
+					if(!audio_paused)
+					{
+						$("#audio")[0].play();
+					}
+
+					$("#video")[0].pause();
+				});
+			});
+		});
+
 	}
 
 </script>
@@ -307,18 +390,26 @@ ul li
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <audio id="audio" autoplay="autoplay" preload="none" loop="loop">
-	<source src="audio/beware2.mp3" type="audio/mpeg" preload="none" />
+	<source src="audio/beware2.ogg" type="audio/ogg" preload="none" />
 </audio>
 
 
 <div id="container">
 
 <div id="background"></div>
-	<div id="pane">
+
+<video id="video" controls="controls"  style="display:none; opacity:0; width:100%;height:100%;">
+	<source src="videos/rise3_480.ogg" />
+</video>
+
+	<div id="pane1" class="pane-back">
 		<div id="pane_header" style="clear:both;">
 			<h1 style="display:inline;">The Legend Ends</h1>
 			<div id="controls" style="float:right">
 				<ul>
+				<li>
+					<a id="rise" class="btn btn-primary btn-small">Rise</a>
+				</li>
 				<li>
 					<a id="fullscreen" class="btn btn-small">Fullscreen</a>
 				</li>
@@ -333,7 +424,7 @@ ul li
 
 		</div>
 		<h2>20<sup>th</sup> July 2012</h2>
-		<div id="pane_time">
+		<div id="pane_time" class="pane-time">
 			<div class="counter_holder" style="margin-left:0px;margin-right:40px;">
 				<h3 id="days">--</h3> <h4>days</h4>
 			</div>
@@ -387,8 +478,42 @@ ul li
 		</li>
 
 		</ul>
+		</div>
+	</div>
+
+	<div id="pane2" class="pane-back" style="display:none; opacity:0;">
+		<ul>
+			<li style="margin-right:0">
+				<a id="end" class="btn btn-primary btn-small">Back to being Bruce Wayne</a>
+			</li>
+		</ul>
+
+		<div id="pane_time2" class="pane-time">
+		
+		<div class="counter_holder" style="margin-left:0px;">
+			<h3 id="days2">20</h3>
+			<h4>days</h4>
+		</div>
+
+		<div class="counter_holder">
+			<h3 id="hours2">17</h3>
+			<h4>hr.<h4>	
+		</div>
+
+		<div class="counter_holder">
+			<h3 id="minutes2">19</h3>
+			<h4>min.</h4>
+		</div>
+
+		<div class="counter_holder">
+			<h3 id="seconds2">52</h3>
+			<h4>sec.</h4>
+		</div>
+
+
 	</div>
 </div>
+
 </body>
 </html>
 
