@@ -230,20 +230,21 @@ ul li
 		{
 			var today = new Date();
 			
-			var diff = release_date - today;
+			var diff = today - release_date;
 			var days = Math.floor(diff/(1000*60*60*24));
-			today.setDate(release_date.getDate() - 1);
+			today.setDate(release_date.getDate() + 1);
 			today.setMonth(release_date.getMonth());
-
-			diff = release_date - today;
+			today.setFullYear(release_date.getFullYear());
+	
+			diff = today - release_date;
 			var hours = Math.floor(diff/(1000*60*60));
-			today.setHours(today.getHours() + hours);	
+			today.setHours(today.getHours() - hours);	
 
-			diff = release_date - today;
+			diff = today - release_date;
 			var minutes = Math.floor(diff/(1000*60))
-			today.setMinutes(today.getMinutes() + minutes)
+			today.setMinutes(today.getMinutes() - minutes)
 
-			diff = release_date - today;
+			diff = today - release_date;
 			var seconds = Math.floor(diff/(1000));		
 
 			var edays = $("#days,#days2");
@@ -423,7 +424,7 @@ ul li
 			</div>
 
 		</div>
-		<h2>20<sup>th</sup> July 2012</h2>
+		<h2>20<sup>th</sup> July 2012</sup></h2>
 		<div id="pane_time" class="pane-time">
 			<div class="counter_holder" style="margin-left:0px;margin-right:40px;">
 				<h3 id="days">--</h3> <h4>days</h4>
@@ -456,7 +457,7 @@ ul li
 		<hr />
 
 		<div id="footer">
-			
+			<span style="font-size:10px;">Now showing time elapsed since release.</span>
 			<!-- Facebook Like -->
 			<ul>
 			<li>
